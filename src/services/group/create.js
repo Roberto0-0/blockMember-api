@@ -19,7 +19,8 @@ class GroupCreate {
 
         return {
             success: true,
-            message: "Grupo criado com sucesso."
+            message: "Grupo criado com sucesso.",
+            data:  newGroup
         }
     }
 }
