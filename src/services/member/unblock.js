@@ -23,7 +23,7 @@ class MemberUnblock {
 
         if (contact.blockedBySerialized !== blockedBySerialized) return {
             success: false,
-            message: "O desbloqueio só pode ser feito pela pessoa que o bloqueou."
+            message: "O desbloqueio só pode ser feito por quem o bloqueou."
         }
 
         function unblockContact(key, value) {
