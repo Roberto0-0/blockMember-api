@@ -23,7 +23,7 @@ class MemberBlockedVerify {
 
         return {
             success: true,
-            message: "⚠️  AVISO! Seu contato foi bloqueado por violação das regras. Leia as regras e contate um *[@adm]* para desbloquear."
+            message: "⚠️  *ATENÇÃO*! Seu contato foi bloqueado de usar os comandos do bot por violação das regras. Entre em contato com um *[@adm]* se tiver dúvidas.\n"
         }
     }
 }
