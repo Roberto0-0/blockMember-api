@@ -1,9 +1,9 @@
 class Group {
-    constructor(session, serialized, name) {
+    constructor(session, name) {
         this.session = session
-        this.serialized = serialized
         this.name = name
         this.blockedMembers = []
+        this.createdAt = Date.now()
     }
 }
 
