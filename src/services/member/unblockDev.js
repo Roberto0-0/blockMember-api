@@ -13,19 +13,15 @@ class MemberUnblockSettings {
 
         const { data } = group
 
-        const contact = data.blockedMembers.find(x => x.serialized == serialized)
-        if (!contact) return {
+        const isBlocked = data.blockedMembers.find(x => x.serialized == serialized)
+        if (!isBlocked) return {
             success: false,
             message: "Este contato não foi bloqueado."
         }
 
-        function unblockContact(key, value) {
-            data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
-                return jsonObject[key] != value;
-            });
-            return data.blockedMembers
-        }
-        unblockContact("serialized", serialized)
+        data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
+            return jsonObject["serialized"] != isBlocked.serialized;
+        });
 
         await this._groupSaveChanges.execute(session, data)
 

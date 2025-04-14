@@ -4,35 +4,31 @@ class MemberUnblock {
         this._groupSaveChanges = groupSaveChanges
     }
 
-    async execute(session, request) {
-        const { serialized, blockedBySerialized } = request 
+    async execute(session, unblockProps) {
+        const { serialized, blockedBy } = unblockProps
 
         const group = await this._groupGetBySession.execute(session)
         if (!group.success) return {
             success: false,
-            message: "Nenhum contato foi bloqueado ainda." 
+            message: "Nenhum contato foi bloqueado ainda."
         }
 
         const { data } = group
 
-        const contact = data.blockedMembers.find(x => x.serialized === serialized)
-        if (!contact) return {
+        const isBlocked = data.blockedMembers.find(x => x.serialized === serialized)
+        if (!isBlocked) return {
             success: false,
             message: "Este contato não foi bloqueado."
         }
 
-        if (contact.blockedBySerialized !== blockedBySerialized) return {
+        if (isBlocked.blockedBy !== blockedBy) return {
             success: false,
-            message: "O desbloqueio só pode ser feito por quem o bloqueou."
+            message: "Não é possível desbloquear este contato."
         }
 
-        function unblockContact(key, value) {
-            data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
-                return jsonObject[key] != value;
-            });
-            return data.blockedMembers
-        }
-        unblockContact("serialized", serialized)
+        data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
+            return jsonObject["serialized"] != isBlocked.serialized;
+        });
 
         await this._groupSaveChanges.execute(session, data)
 
