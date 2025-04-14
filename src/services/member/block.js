@@ -7,7 +7,6 @@ class MemberBlock {
     }
 
     async execute(session, blockProps) {
-        console.log(blockProps)
         const {
             serialized,
             name,
