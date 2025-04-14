@@ -12,12 +12,8 @@ class GroupController {
         this._foldeExist()
     }
 
-    async create(session, request) {
-        const groupGetBySession = new GroupGetBySession(this.storage)
-        const groupSaveChanges = new GroupSaveChanges(this.storage)
-
-        const service = new GroupCreate(groupGetBySession, groupSaveChanges)
-        return await service.execute(session, request)
+    create(groupProps) {
+        return new GroupCreate().execute(groupProps)
     }
 
     async getBySession(session) {
@@ -30,11 +26,9 @@ class GroupController {
         return await service.execute()
     }
 
-    async saveChanges(session, request) {
-        const groupGetBySession = new GroupGetBySession(this.storage)
-
-        const service = new GroupSaveChanges(this.storage, groupGetBySession)
-        return await service.execute(session, request)
+    async saveChanges(session, data) {
+        const service = new GroupSaveChanges(this.storage)
+        return await service.execute(session, data)
     }
 
     async delete(session) {
