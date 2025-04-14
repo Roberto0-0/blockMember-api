@@ -12,20 +12,20 @@ class MemberController {
         this.storage = path.join(process.cwd(), `${storagePath}/blockMember_storage`)
     }
 
-    async block(session, request) {
+    async block(session, blockProps) {
         const groupGetBySession = new GroupGetBySession(this.storage)
         const groupSaveChanges = new GroupSaveChanges(this.storage)
 
         const service = new MemberBlock(groupGetBySession, groupSaveChanges)
-        return await service.execute(session, request)
+        return await service.execute(session, blockProps)
     }
 
-    async unblock(session, request) {
+    async unblock(session, unBlockProps) {
         const groupGetBySession = new GroupGetBySession(this.storage)
         const groupSaveChanges = new GroupSaveChanges(this.storage)
 
         const service = new MemberUnblock(groupGetBySession, groupSaveChanges)
-        return await service.execute(session, request)
+        return await service.execute(session, unBlockProps)
     }
 
     async blockedVerify(session, serialized) {
@@ -36,12 +36,12 @@ class MemberController {
         return await service.execute(session, serialized)
     }
 
-    async blockDev(session, request) {
+    async blockDev(session, blockDevProps) {
         const groupGetBySession = new GroupGetBySession(this.storage)
         const groupSaveChanges = new GroupSaveChanges(this.storage)
 
         const service = new MemberBlockSettings(groupGetBySession, groupSaveChanges)
-        return await service.execute(session, request)
+        return await service.execute(session, blockDevProps)
     }
 
     async unblockDev(session, serialized) {
