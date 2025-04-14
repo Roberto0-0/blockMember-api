@@ -5,6 +5,8 @@ class MemberBlockedVerify {
     }
 
     async execute(session, serialized) {
+        let messageAlert = "⚠️  *ATENÇÃO*! Seu contato foi bloqueado #blockType# de usar os comandos do "
+        messageAlert += "bot por #reason#. Entre em contato com um *[@adm]* se tiver dúvidas.\n"
         const group = await this._groupGetBySession.execute(session)
         if (!group.success) return {
             success: false,
@@ -13,17 +15,28 @@ class MemberBlockedVerify {
 
         const { data } = group
 
-        const memberIsBlocked = data.blockedMembers.find(x => x.serialized == serialized)
-        if (!memberIsBlocked) return { success: false }
-        if (memberIsBlocked.wasAlerted) return { success: true }
+        const isBlocked = data.blockedMembers.find(x => x.serialized == serialized)
+        if (!isBlocked) return { success: false }
+        if (isBlocked.wasAlerted) {
+            if (isBlocked.type === "permanent") return { success: true }
+            if (isBlocked.timeout <= Date.now()) {
+                data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
+                    return jsonObject["serialized"] != isBlocked.serialized;
+                });
+                return { success: false }
+            } else { return { success: true } }
+        }
 
-        memberIsBlocked.wasAlerted = true
+        isBlocked.wasAlerted = true
 
         await this._groupSaveChanges.execute(session, data)
 
+        messageAlert = messageAlert.replace("#reason#", isBlocked.reason)
+        messageAlert = messageAlert.replace("#blockType#", (isBlocked.type === "permanent") ? "permanentemente" : "temporariamente")
+
         return {
             success: true,
-            message: "⚠️  *ATENÇÃO*! Seu contato foi bloqueado de usar os comandos do bot por violação das regras. Entre em contato com um *[@adm]* se tiver dúvidas.\n"
+            message: messageAlert
         }
     }
 }

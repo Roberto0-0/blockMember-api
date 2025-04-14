@@ -6,8 +6,15 @@ class MemberBlock {
         this._groupSaveChanges = groupSaveChanges
     }
 
-    async execute(session, request) {
-        const { serialized, name, blockedBySerialized } = request
+    async execute(session, blockProps) {
+        console.log(blockProps)
+        const {
+            serialized,
+            name,
+            blockedBy,
+            timeout,
+            reason
+        } = blockProps
 
         const group = await this._groupGetBySession.execute(session)
         if (!group.success) return {
@@ -22,22 +29,13 @@ class MemberBlock {
             message: "Este contato já está bloqueado."
         }
 
-        const newMember = new Member(serialized, name, blockedBySerialized)
+        const newMember = new Member(serialized, name, blockedBy, { timeout, reason })
 
-        data.blockedMembers.push({
-            serialized: newMember.serialized,
-            name: newMember.name,
-            blockedBySerialized: newMember.blockedBySerialized,
-            wasAlerted: false,
-            blockedAt: new Date()
-        })
+        data.blockedMembers.push(newMember)
 
         await this._groupSaveChanges.execute(session, data)
 
-        return {
-            success: true,
-            message: "O contato foi bloqueado."
-        }
+        return { success: true }
     }
 }
 
