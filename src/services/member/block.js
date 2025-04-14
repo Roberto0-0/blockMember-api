@@ -22,8 +22,8 @@ class MemberBlock {
         }
         const { data } = group
 
-        const memberIsBlocked = data.blockedMembers.find(x => x.serialized == serialized)
-        if (memberIsBlocked) return {
+        const isBlocked = data.blockedMembers.find(x => x.serialized == serialized)
+        if (isBlocked) return {
             success: false,
             message: "Este contato já está bloqueado."
         }
@@ -34,7 +34,10 @@ class MemberBlock {
 
         await this._groupSaveChanges.execute(session, data)
 
-        return { success: true }
+        return { 
+            success: true,
+            message: `*@${newMember.name}* foi bloqueado.`
+        }
     }
 }
 
