@@ -34,7 +34,7 @@ class MemberUnblock {
 
         return {
             success: true,
-            message: "O contato foi desbloqueado."
+            message: `*@${isBlocked.name}* foi desbloqueado.` 
         }
     }
 }
