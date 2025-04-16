@@ -23,8 +23,13 @@ class MemberBlockedVerify {
                 data.blockedMembers = data.blockedMembers.filter(function(jsonObject) {
                     return jsonObject["serialized"] != isBlocked.serialized;
                 });
+
+                await this._groupSaveChanges.execute(session, data)
+
                 return { success: false }
-            } else { return { success: true } }
+            }
+
+            return { success: true }
         }
 
         isBlocked.wasAlerted = true
