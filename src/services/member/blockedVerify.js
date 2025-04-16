@@ -32,8 +32,6 @@ class MemberBlockedVerify {
             return { success: true }
         }
 
-        isBlocked.wasAlerted = true
-
         await this._groupSaveChanges.execute(session, data)
 
         messageAlert = messageAlert.replace("#reason#", isBlocked.reason)
