@@ -5,6 +5,7 @@ test("should create group", async () => {
 
     const groupProps = {
         session,
+        serialized: "31099203002",
         name: "group name"
     }
 
