@@ -2,9 +2,9 @@ const { Group } = require("../../models/Group")
 
 class GroupCreate {
     execute(groupProps) {
-        const { session, name } = groupProps
+        const { session, serialized, name } = groupProps
 
-        const newGroup = new Group(session, name)
+        const newGroup = new Group(session, serialized, name)
 
         return { data: newGroup }
     }
