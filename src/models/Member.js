@@ -6,7 +6,7 @@ class Member {
         this.type = this.setBlockType(timeout)
         this.timeout = this.setTimeout(timeout)
         this.reason = reason
-        this.wasAlerted = true 
+        this.wasAlerted = false 
         this.blockedAt = Date.now()
     }
 
